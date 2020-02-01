@@ -6,7 +6,7 @@
 #include "UObject/Interface.h"
 #include "Interactable.generated.h"
 
-UINTERFACE(MinimalAPI)
+UINTERFACE(MinimalAPI, BlueprintType)
 class UInteractable : public UInterface
 {
 	GENERATED_BODY()
