@@ -10,6 +10,9 @@
 #include "HeadMountedDisplayFunctionLibrary.h"
 #include "Kismet/GameplayStatics.h"
 #include "MotionControllerComponent.h"
+#include "DrawDebugHelpers.h"
+#include "Engine/Engine.h"
+#include "Interactable.h"
 #include "XRMotionControllerBase.h" // for FXRMotionControllerBase::RightHandSourceId
 
 DEFINE_LOG_CATEGORY_STATIC(LogFPChar, Warning, All);
@@ -139,6 +142,9 @@ void AGGJ2020Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAxis("TurnRate", this, &AGGJ2020Character::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AGGJ2020Character::LookUpAtRate);
+	
+	//Interact with target object
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGGJ2020Character::OnInteract);
 }
 
 void AGGJ2020Character::OnFire()
@@ -185,6 +191,43 @@ void AGGJ2020Character::OnFire()
 		if (AnimInstance != NULL)
 		{
 			AnimInstance->Montage_Play(FireAnimation, 1.f);
+		}
+	}
+}
+
+//Interact with target object
+void AGGJ2020Character::OnInteract()
+{
+	FHitResult OutHit;
+
+	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
+	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
+	//Start += (ForwardVector * 30.0f);
+	FVector End = (Start + (ForwardVector * 250.0f));
+
+	FCollisionQueryParams CollisionParams;
+
+	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.0f, 0.0f, 1.0f);
+
+	bool isHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
+
+	if (isHit)
+	{
+		if (OutHit.bBlockingHit)
+		{
+			if (GEngine)
+			{
+				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString("Hitting '" + OutHit.GetActor()->GetName() + "'"));
+			}
+
+
+			AActor* TargetActor = OutHit.GetActor();
+
+			if (TargetActor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
+			{
+				IInteractable::Execute_Action(TargetActor);
+			}
+
 		}
 	}
 }
