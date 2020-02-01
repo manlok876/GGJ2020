@@ -14,40 +14,33 @@ class GGJ2020_API UPowerActorComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UPowerActorComponent();
 
-
-
 protected:
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-		int PowerAmount{ 0 };
+		float PowerAmount{ 0 };
 
 public:
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
 	UPROPERTY(BlueprintAssignable, Category="Power component")
 		FPowerChangedDelegate OnPowerChanged;
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Power component")
-		int GetPowerAmount();
+		float GetPowerAmount();
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		void SetPowerAmount(int NewAmount);
+		void SetPowerAmount(float NewAmount);
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool AddPowerAmount(int AmountToAdd);
+		bool AddPowerAmount(float AmountToAdd);
 
 	UFUNCTION(BlueprintCallable, Category="Power component")
-		bool TransferPowerTo(UPowerActorComponent* DestinationComponent, int PowerToTransfer);
+		bool TransferPowerTo(UPowerActorComponent* DestinationComponent, float PowerToTransfer);
 	
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool TransferPowerFrom(UPowerActorComponent* SourceComponent, int PowerToTransfer);
+		bool TransferPowerFrom(UPowerActorComponent* SourceComponent, float PowerToTransfer);
 			
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool TransferPower(UPowerActorComponent* SourceComponent, UPowerActorComponent* DestinationComponent, int PowerToTransfer);
+		bool TransferPower(UPowerActorComponent* SourceComponent, UPowerActorComponent* DestinationComponent, float PowerToTransfer);
 };

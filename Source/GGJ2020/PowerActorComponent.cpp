@@ -3,41 +3,23 @@
 
 #include "PowerActorComponent.h"
 
-// Sets default values for this component's properties
 UPowerActorComponent::UPowerActorComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	PrimaryComponentTick.bCanEverTick = false;
 }
 
 
-// Called when the game starts
 void UPowerActorComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
-
-// Called every frame
-void UPowerActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
-}
-
-int UPowerActorComponent::GetPowerAmount()
+float UPowerActorComponent::GetPowerAmount()
 {
 	return PowerAmount;
 }
 
-void UPowerActorComponent::SetPowerAmount(int NewAmount)
+void UPowerActorComponent::SetPowerAmount(float NewAmount)
 {
 	if (NewAmount >= 0)
 	{
@@ -47,7 +29,7 @@ void UPowerActorComponent::SetPowerAmount(int NewAmount)
 	}
 }
 
-bool UPowerActorComponent::AddPowerAmount(int AmountToAdd)
+bool UPowerActorComponent::AddPowerAmount(float AmountToAdd)
 {
 	//PowerAmount = FMath::Max(PowerAmount + AmountToAdd, 0);
 	if (PowerAmount + AmountToAdd < 0)
@@ -65,17 +47,17 @@ bool UPowerActorComponent::AddPowerAmount(int AmountToAdd)
 	return true;
 }
 
-bool UPowerActorComponent::TransferPowerTo(UPowerActorComponent * DestinationComponent, int PowerToTransfer)
+bool UPowerActorComponent::TransferPowerTo(UPowerActorComponent * DestinationComponent, float PowerToTransfer)
 {
 	return TransferPower(this, DestinationComponent, PowerToTransfer);
 }
 
-bool UPowerActorComponent::TransferPowerFrom(UPowerActorComponent * SourceComponent, int PowerToTransfer)
+bool UPowerActorComponent::TransferPowerFrom(UPowerActorComponent * SourceComponent, float PowerToTransfer)
 {
 	return TransferPower(SourceComponent, this, PowerToTransfer);
 }
 
-bool UPowerActorComponent::TransferPower(UPowerActorComponent * SourceComponent, UPowerActorComponent * DestinationComponent, int PowerToTransfer)
+bool UPowerActorComponent::TransferPower(UPowerActorComponent * SourceComponent, UPowerActorComponent * DestinationComponent, float PowerToTransfer)
 {
 	if (SourceComponent->GetPowerAmount() < PowerAmount)
 	{
