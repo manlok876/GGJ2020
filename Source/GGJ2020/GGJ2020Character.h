@@ -135,6 +135,8 @@ protected:
 	 */
 	bool EnableTouchscreenMovement(UInputComponent* InputComponent);
 
+	UPROPERTY(EditDefaultsOnly, Category = "Interact")
+		float InteractionDistance{ 250.0f };
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
@@ -144,5 +146,6 @@ public:
 	//PowerActorComponent
 	UPROPERTY()
 	UPowerActorComponent* PowerComponent;
+
 };
 

@@ -203,11 +203,11 @@ void AGGJ2020Character::OnInteract()
 	FVector Start = FirstPersonCameraComponent->GetComponentLocation();
 	FVector ForwardVector = FirstPersonCameraComponent->GetForwardVector();
 	//Start += (ForwardVector * 30.0f);
-	FVector End = (Start + (ForwardVector * 250.0f));
+	FVector End = (Start + (ForwardVector * InteractionDistance));
 
 	FCollisionQueryParams CollisionParams;
 
-	DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.0f, 0.0f, 1.0f);
+	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.0f, 0.0f, 1.0f);
 
 	bool isHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
 
@@ -215,10 +215,10 @@ void AGGJ2020Character::OnInteract()
 	{
 		if (OutHit.bBlockingHit)
 		{
-			if (GEngine)
+			/*if (GEngine)
 			{
 				GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, FString("Hitting '" + OutHit.GetActor()->GetName() + "'"));
-			}
+			}*/
 
 
 			AActor* TargetActor = OutHit.GetActor();
