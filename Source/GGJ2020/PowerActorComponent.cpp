@@ -32,3 +32,31 @@ void UPowerActorComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	// ...
 }
 
+int UPowerActorComponent::GetPowerAmount()
+{
+	return PowerAmount;
+}
+
+void UPowerActorComponent::SetPowerAmount(int NewAmount)
+{
+	if (NewAmount >= 0)
+	{
+		PowerAmount = NewAmount;
+	}
+}
+
+bool UPowerActorComponent::AddPowerAmount(int AmountToAdd)
+{
+	//PowerAmount = FMath::Max(PowerAmount + AmountToAdd, 0);
+	if (PowerAmount + AmountToAdd < 0)
+	{
+		PowerAmount = 0;
+
+		return false;
+	}
+
+	PowerAmount += AmountToAdd;
+
+	return true;
+}
+

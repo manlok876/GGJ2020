@@ -16,13 +16,27 @@ public:
 	// Sets default values for this component's properties
 	UPowerActorComponent();
 
+	//DECLARE_DELEGATE_OneParam(FChangePowerDelegate)
+
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+	UPROPERTY()
+		int PowerAmount{ 0 };
+
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Power component")
+		int GetPowerAmount();
+
+	UFUNCTION(BlueprintCallable, Category = "Power component")
+		void SetPowerAmount(int NewAmount);
+
+	UFUNCTION(BlueprintCallable, Category = "Power component")
+		bool AddPowerAmount(int AmountToAdd);
 
 		
 };
