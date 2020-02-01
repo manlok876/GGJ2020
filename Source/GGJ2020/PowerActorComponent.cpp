@@ -21,44 +21,38 @@ float UPowerActorComponent::GetPowerAmount()
 
 void UPowerActorComponent::SetPowerAmount(float NewAmount)
 {
-	if (NewAmount >= 0)
-	{
-		PowerAmount = NewAmount;
+	float OldPower = PowerAmount;
 
+	PowerAmount = FMath::Clamp(NewAmount, 0.0f, PowerLimit);
+
+	if (OldPower != PowerAmount)
+	{
 		OnPowerChanged.Broadcast();
 	}
 }
 
 void UPowerActorComponent::SetPowerLimit(float NewLimit)
 {
-	if (NewLimit >= 0)
+	NewLimit = FMath::Max(0.0f, NewLimit);
+	PowerLimit = NewLimit;
+	if (PowerAmount > PowerLimit)
 	{
-		PowerLimit = NewLimit;
-
-		if (PowerAmount > PowerLimit)
-		{
-			PowerAmount = PowerLimit;
-			OnPowerChanged.Broadcast();
-		}
+		SetPowerAmount(NewLimit);
 	}
 }
 
-bool UPowerActorComponent::AddPowerAmount(float AmountToAdd)
+float UPowerActorComponent::AddPowerAmount(float AmountToAdd, bool FailIfOutOfBounds)
 {
-	//PowerAmount = FMath::Max(PowerAmount + AmountToAdd, 0);
-	if (PowerAmount + AmountToAdd < 0)
+	float TargetAmount = PowerAmount + AmountToAdd;
+
+	if ((TargetAmount < 0.0f || TargetAmount > PowerLimit) && FailIfOutOfBounds)
 	{
-		PowerAmount = 0;
-
-		OnPowerChanged.Broadcast();
-
-		return false;
+		return 0.0f;
 	}
 
-	PowerAmount += AmountToAdd;
-	OnPowerChanged.Broadcast();
-
-	return true;
+	float OldPower = PowerAmount;
+	SetPowerAmount(TargetAmount);
+	return PowerAmount - OldPower;
 }
 
 bool UPowerActorComponent::TransferPowerTo(UPowerActorComponent * DestinationComponent, float PowerToTransfer)
@@ -73,15 +67,14 @@ bool UPowerActorComponent::TransferPowerFrom(UPowerActorComponent * SourceCompon
 
 bool UPowerActorComponent::TransferPower(UPowerActorComponent * SourceComponent, UPowerActorComponent * DestinationComponent, float PowerToTransfer)
 {
+	check(PowerToTransfer >= 0);
 	if (SourceComponent->GetPowerAmount() < PowerAmount)
 	{
 		return false;
 	}
 
-	SourceComponent->AddPowerAmount(-1 * PowerToTransfer);
+	SourceComponent->AddPowerAmount(-1.0f * PowerToTransfer);
 	DestinationComponent->AddPowerAmount(PowerToTransfer);
-
-	OnPowerChanged.Broadcast();
 
 	return false;
 }

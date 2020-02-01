@@ -29,7 +29,7 @@ public:
 	UPROPERTY(BlueprintAssignable, Category="Power component")
 		FPowerChangedDelegate OnPowerChanged;
 
-	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Power component")
+	UFUNCTION(BlueprintPure, Category = "Power component")
 		float GetPowerAmount();
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
@@ -39,14 +39,14 @@ public:
 		void SetPowerLimit(float NewLimit);
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool AddPowerAmount(float AmountToAdd);
+		float AddPowerAmount(float AmountToAdd, bool FailIfOutOfBounds = false);
 
 	UFUNCTION(BlueprintCallable, Category="Power component")
-		bool TransferPowerTo(UPowerActorComponent* DestinationComponent, float PowerToTransfer);
+		bool TransferPowerTo(UPowerActorComponent* Target, float AmountToTransfer);
 	
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool TransferPowerFrom(UPowerActorComponent* SourceComponent, float PowerToTransfer);
+		bool TransferPowerFrom(UPowerActorComponent* Target, float AmountToTransfer);
 			
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool TransferPower(UPowerActorComponent* SourceComponent, UPowerActorComponent* DestinationComponent, float PowerToTransfer);
+		bool TransferPower(UPowerActorComponent* From, UPowerActorComponent* To, float AmountToTransfer);
 };
