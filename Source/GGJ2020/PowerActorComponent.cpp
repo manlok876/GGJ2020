@@ -2,6 +2,7 @@
 
 
 #include "PowerActorComponent.h"
+#include "GameFramework/Actor.h"
 
 UPowerActorComponent::UPowerActorComponent()
 {
@@ -55,26 +56,28 @@ float UPowerActorComponent::AddPowerAmount(float AmountToAdd, bool FailIfOutOfBo
 	return PowerAmount - OldPower;
 }
 
-bool UPowerActorComponent::TransferPowerTo(UPowerActorComponent * DestinationComponent, float PowerToTransfer)
+bool UPowerActorComponent::TransferPowerTo(AActor* Target, float AmountToTransfer)
 {
-	return TransferPower(this, DestinationComponent, PowerToTransfer);
+	UPowerActorComponent* TargetComponent = Target->FindComponentByClass<UPowerActorComponent>();
+	return TransferPower(this, TargetComponent, AmountToTransfer);
 }
 
-bool UPowerActorComponent::TransferPowerFrom(UPowerActorComponent * SourceComponent, float PowerToTransfer)
+bool UPowerActorComponent::TransferPowerFrom(AActor* Target, float AmountToTransfer)
 {
-	return TransferPower(SourceComponent, this, PowerToTransfer);
+	UPowerActorComponent* TargetComponent = Target->FindComponentByClass<UPowerActorComponent>();
+	return TransferPower(TargetComponent, this, AmountToTransfer);
 }
 
-bool UPowerActorComponent::TransferPower(UPowerActorComponent * SourceComponent, UPowerActorComponent * DestinationComponent, float PowerToTransfer)
+bool UPowerActorComponent::TransferPower(UPowerActorComponent* From, UPowerActorComponent* To, float AmountToTransfer)
 {
-	check(PowerToTransfer >= 0);
-	if (SourceComponent->GetPowerAmount() < PowerAmount)
+	check(AmountToTransfer >= 0);
+	if (From->GetPowerAmount() < PowerAmount)
 	{
 		return false;
 	}
 
-	SourceComponent->AddPowerAmount(-1.0f * PowerToTransfer);
-	DestinationComponent->AddPowerAmount(PowerToTransfer);
+	From->AddPowerAmount(-1.0f * AmountToTransfer);
+	To->AddPowerAmount(AmountToTransfer);
 
 	return false;
 }

@@ -42,10 +42,10 @@ public:
 		float AddPowerAmount(float AmountToAdd, bool FailIfOutOfBounds = false);
 
 	UFUNCTION(BlueprintCallable, Category="Power component")
-		bool TransferPowerTo(UPowerActorComponent* Target, float AmountToTransfer);
+		bool TransferPowerTo(AActor* Target, float AmountToTransfer);
 	
 	UFUNCTION(BlueprintCallable, Category = "Power component")
-		bool TransferPowerFrom(UPowerActorComponent* Target, float AmountToTransfer);
+		bool TransferPowerFrom(AActor* Target, float AmountToTransfer);
 			
 	UFUNCTION(BlueprintCallable, Category = "Power component")
 		bool TransferPower(UPowerActorComponent* From, UPowerActorComponent* To, float AmountToTransfer);
