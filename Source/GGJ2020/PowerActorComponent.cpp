@@ -7,6 +7,7 @@
 UPowerActorComponent::UPowerActorComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	bEditableWhenInherited = true;
 }
 
 
@@ -85,6 +86,6 @@ bool UPowerActorComponent::TransferPower(UPowerActorComponent* From, UPowerActor
 	From->AddPowerAmount(-1.0f * AmountToTransfer);
 	To->AddPowerAmount(AmountToTransfer);
 
-	return false;
+	return true;
 }
 
