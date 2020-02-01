@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "PowerActorComponent.h"
 #include "GGJ2020Character.generated.h"
 
 class UInputComponent;
@@ -140,5 +141,8 @@ public:
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	//PowerActorComponent
+	UPROPERTY()
+	UPowerActorComponent* PowerComponent;
 };
 

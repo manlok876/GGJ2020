@@ -82,6 +82,9 @@ AGGJ2020Character::AGGJ2020Character()
 
 	// Uncomment the following line to turn motion controllers on by default:
 	//bUsingMotionControllers = true;
+
+	//PowerActorComponent
+	PowerComponent = CreateDefaultSubobject<UPowerActorComponent>(TEXT("PowerComponent"));
 }
 
 void AGGJ2020Character::BeginPlay()
