@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "PowerActorComponent.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPowerChangedDelegate);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class GGJ2020_API UPowerActorComponent : public UActorComponent
@@ -16,7 +17,7 @@ public:
 	// Sets default values for this component's properties
 	UPowerActorComponent();
 
-	//DECLARE_DELEGATE_OneParam(FChangePowerDelegate)
+
 
 protected:
 	// Called when the game starts
@@ -29,6 +30,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(BlueprintAssignable, Category="Power component")
+		FPowerChangedDelegate OnPowerChanged;
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Power component")
 		int GetPowerAmount();
 
@@ -38,5 +42,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Power component")
 		bool AddPowerAmount(int AmountToAdd);
 
-		
+	UFUNCTION(BlueprintCallable, Category="Power component")
+		bool TransferPowerTo(UPowerActorComponent* DestinationComponent, int PowerToTransfer);
+	
+	UFUNCTION(BlueprintCallable, Category = "Power component")
+		bool TransferPowerFrom(UPowerActorComponent* SourceComponent, int PowerToTransfer);
+			
+	UFUNCTION(BlueprintCallable, Category = "Power component")
+		bool TransferPower(UPowerActorComponent* SourceComponent, UPowerActorComponent* DestinationComponent, int PowerToTransfer);
 };

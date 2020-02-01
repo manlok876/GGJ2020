@@ -42,6 +42,8 @@ void UPowerActorComponent::SetPowerAmount(int NewAmount)
 	if (NewAmount >= 0)
 	{
 		PowerAmount = NewAmount;
+
+		OnPowerChanged.Broadcast();
 	}
 }
 
@@ -52,11 +54,39 @@ bool UPowerActorComponent::AddPowerAmount(int AmountToAdd)
 	{
 		PowerAmount = 0;
 
+		OnPowerChanged.Broadcast();
+
 		return false;
 	}
 
 	PowerAmount += AmountToAdd;
+	OnPowerChanged.Broadcast();
 
 	return true;
+}
+
+bool UPowerActorComponent::TransferPowerTo(UPowerActorComponent * DestinationComponent, int PowerToTransfer)
+{
+	return TransferPower(this, DestinationComponent, PowerToTransfer);
+}
+
+bool UPowerActorComponent::TransferPowerFrom(UPowerActorComponent * SourceComponent, int PowerToTransfer)
+{
+	return TransferPower(SourceComponent, this, PowerToTransfer);
+}
+
+bool UPowerActorComponent::TransferPower(UPowerActorComponent * SourceComponent, UPowerActorComponent * DestinationComponent, int PowerToTransfer)
+{
+	if (SourceComponent->GetPowerAmount() < PowerAmount)
+	{
+		return false;
+	}
+
+	SourceComponent->AddPowerAmount(-1 * PowerToTransfer);
+	DestinationComponent->AddPowerAmount(PowerToTransfer);
+
+	OnPowerChanged.Broadcast();
+
+	return false;
 }
 
