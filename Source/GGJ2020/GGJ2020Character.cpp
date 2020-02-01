@@ -225,7 +225,7 @@ void AGGJ2020Character::OnInteract()
 
 			if (TargetActor->GetClass()->ImplementsInterface(UInteractable::StaticClass()))
 			{
-				IInteractable::Execute_Action(TargetActor);
+				IInteractable::Execute_Action(TargetActor, this);
 			}
 
 		}

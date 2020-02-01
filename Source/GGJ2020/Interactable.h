@@ -21,5 +21,5 @@ class GGJ2020_API IInteractable
 
 public:
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent)
-	void Action();
+	void Action(AActor* Instigator);
 };
