@@ -29,6 +29,20 @@ void UPowerActorComponent::SetPowerAmount(float NewAmount)
 	}
 }
 
+void UPowerActorComponent::SetPowerLimit(float NewLimit)
+{
+	if (NewLimit >= 0)
+	{
+		PowerLimit = NewLimit;
+
+		if (PowerAmount > PowerLimit)
+		{
+			PowerAmount = PowerLimit;
+			OnPowerChanged.Broadcast();
+		}
+	}
+}
+
 bool UPowerActorComponent::AddPowerAmount(float AmountToAdd)
 {
 	//PowerAmount = FMath::Max(PowerAmount + AmountToAdd, 0);

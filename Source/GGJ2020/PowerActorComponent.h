@@ -22,6 +22,9 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 		float PowerAmount{ 0 };
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float PowerLimit{ 5 };
+
 public:
 	UPROPERTY(BlueprintAssignable, Category="Power component")
 		FPowerChangedDelegate OnPowerChanged;
@@ -31,6 +34,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
 		void SetPowerAmount(float NewAmount);
+
+	UFUNCTION(BlueprintCallable, Category = "Power component")
+		void SetPowerLimit(float NewLimit);
 
 	UFUNCTION(BlueprintCallable, Category = "Power component")
 		bool AddPowerAmount(float AmountToAdd);
