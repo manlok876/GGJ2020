@@ -7,6 +7,7 @@
 UPowerActorComponent::UPowerActorComponent()
 {
 	PrimaryComponentTick.bCanEverTick = false;
+	bEditableWhenInherited = true;
 }
 
 
@@ -58,12 +59,14 @@ float UPowerActorComponent::AddPowerAmount(float AmountToAdd, bool FailIfOutOfBo
 
 bool UPowerActorComponent::TransferPowerTo(AActor* Target, float AmountToTransfer)
 {
+	check(Target != nullptr);
 	UPowerActorComponent* TargetComponent = Target->FindComponentByClass<UPowerActorComponent>();
 	return TransferPower(this, TargetComponent, AmountToTransfer);
 }
 
 bool UPowerActorComponent::TransferPowerFrom(AActor* Target, float AmountToTransfer)
 {
+	check(Target != nullptr);
 	UPowerActorComponent* TargetComponent = Target->FindComponentByClass<UPowerActorComponent>();
 	return TransferPower(TargetComponent, this, AmountToTransfer);
 }
@@ -71,6 +74,10 @@ bool UPowerActorComponent::TransferPowerFrom(AActor* Target, float AmountToTrans
 bool UPowerActorComponent::TransferPower(UPowerActorComponent* From, UPowerActorComponent* To, float AmountToTransfer)
 {
 	check(AmountToTransfer >= 0);
+	if (From == nullptr || To == nullptr)
+	{
+		return false;
+	}
 	if (From->GetPowerAmount() < PowerAmount)
 	{
 		return false;
@@ -79,6 +86,6 @@ bool UPowerActorComponent::TransferPower(UPowerActorComponent* From, UPowerActor
 	From->AddPowerAmount(-1.0f * AmountToTransfer);
 	To->AddPowerAmount(AmountToTransfer);
 
-	return false;
+	return true;
 }
 

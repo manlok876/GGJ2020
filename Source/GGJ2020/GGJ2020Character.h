@@ -46,6 +46,9 @@ class AGGJ2020Character : public ACharacter
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UMotionControllerComponent* L_MotionController;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	UPowerActorComponent* PowerComponent;
+
 public:
 	AGGJ2020Character();
 
@@ -142,10 +145,5 @@ public:
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
-
-	//PowerActorComponent
-	UPROPERTY()
-	UPowerActorComponent* PowerComponent;
-
 };
 
