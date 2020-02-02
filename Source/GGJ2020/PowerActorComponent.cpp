@@ -80,6 +80,10 @@ bool UPowerActorComponent::TransferPower(UPowerActorComponent* From, UPowerActor
 	}
 	if (From->GetPowerAmount() < PowerAmount)
 	{
+		float AccessablePower = FMath::Min(PowerAmount, AmountToTransfer);
+		From->AddPowerAmount(-1.0f * AccessablePower);
+		To->AddPowerAmount(AccessablePower);
+
 		return false;
 	}
 
