@@ -11,5 +11,10 @@ UPanelButtonComponent::UPanelButtonComponent()
 	{
 		SetStaticMesh(ButtonMeshFinder.Object);
 	}
+	OnClicked.AddDynamic(this, &UPanelButtonComponent::ClickReaction);
 }
 
+void UPanelButtonComponent::ClickReaction(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed)
+{
+	OnCLickDelegate.Broadcast(NodeNumber);
+}

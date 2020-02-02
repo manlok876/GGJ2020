@@ -9,7 +9,10 @@
 /**
  * 
  */
-UCLASS()
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnNodeClicked, int, NodeNum);
+
+UCLASS(Blueprintable, ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class GGJ2020_API UPanelButtonComponent : public UStaticMeshComponent
 {
 	GENERATED_BODY()
@@ -18,4 +21,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	int NodeNumber;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnNodeClicked OnCLickDelegate;
+
+	UFUNCTION()
+	void ClickReaction(UPrimitiveComponent* TouchedComponent, FKey ButtonPressed);
 };
