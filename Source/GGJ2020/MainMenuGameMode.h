@@ -16,7 +16,17 @@ class GGJ2020_API AMainMenuGameMode : public AGameMode
 
 		AMainMenuGameMode();
 
+	virtual void BeginPlay() override;
+
 protected:
+
+	APlayerController* GetPlayerController();
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main menu")
+		TSubclassOf<UUserWidget> wMainMenu;
+
+	UUserWidget* MainMenuWidget;
 
 	
 };
