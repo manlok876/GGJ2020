@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameStateBase.h"
+#include "Panel.h"
 #include "GGJ2020GameStateBase.generated.h"
 
 /**
@@ -15,6 +16,34 @@ class GGJ2020_API AGGJ2020GameStateBase : public AGameStateBase
 	GENERATED_BODY()
 
 private:
-	//TMap<
+	UFUNCTION()
+		virtual void BeginPlay() override;
+
+	UPROPERTY(EditAnywhere, Category="Panels")
+		TArray<APanel*> UnsolvedPanels;
+
+	UPROPERTY(EditAnywhere, Category="Panels")
+		TArray<APanel*> SolvedPanels;
+
 	
+	UPROPERTY(EditAnywhere, Category="Game state")
+		bool bIsGameInProgress;
+
+public:
+
+	UFUNCTION(BlueprintCallable, Category = "Panels")
+		void AddPanel(APanel* NewPanel);
+
+	UFUNCTION(BlueprintCallable, Category = "Panels")
+		bool MovePanelToSolved(APanel* PanelToMove);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Panels")
+		TArray<APanel*> GetSolvedPanels();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Game state")
+		bool GetGameInProgress();
+
+	UFUNCTION(BlueprintCallable, Category = "Game state")
+		void SetGameInProgress(bool bNewGameInProgress);
+
 };

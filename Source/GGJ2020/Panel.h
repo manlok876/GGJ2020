@@ -6,6 +6,8 @@
 #include "GameFramework/Actor.h"
 #include "Panel.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPuzzleSolved, APanel*, SolvedPanel);
+
 UCLASS()
 class GGJ2020_API APanel : public AActor
 {
@@ -18,9 +20,18 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	UFUNCTION(BlueprintCallable, Category="Pannels|State")
+		void CallOnPuzzleSolved();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	UPROPERTY(BlueprintAssignable, Category="Panels|State")
+		FPuzzleSolved OnPuzzleSolved;
+
+	UPROPERTY(EditAnywhere, Category = "Panels|State")
+		bool bIsPuzzleSolved{ false };
 
 };

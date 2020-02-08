@@ -18,6 +18,11 @@ void APanel::BeginPlay()
 	
 }
 
+void APanel::CallOnPuzzleSolved()
+{
+	OnPuzzleSolved.Broadcast(this);
+}
+
 // Called every frame
 void APanel::Tick(float DeltaTime)
 {

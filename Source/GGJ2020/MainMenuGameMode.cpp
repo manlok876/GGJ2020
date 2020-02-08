@@ -15,6 +15,9 @@ AMainMenuGameMode::AMainMenuGameMode()
 
 void AMainMenuGameMode::BeginPlay()
 {
+	Super::BeginPlay();
+
+
 	if (wMainMenu)
 	{
 		APlayerController* PlayerController = GetPlayerController();
