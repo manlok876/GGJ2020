@@ -19,8 +19,20 @@ public:
 	virtual void BeginPlay() override;
 
 protected:
+
+	APlayerController* GetPlayerController();
+
 	UFUNCTION()
 		void PanelSolveHandler(APanel* SolvedPanel);
+
+public:
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player HUD")
+		TSubclassOf<UUserWidget> wPlayerHUD;
+
+	UPROPERTY(BlueprintReadWrite, Category = "Player HUD")
+		UUserWidget* PlayerHUDWidget;
+
 
 };
 
