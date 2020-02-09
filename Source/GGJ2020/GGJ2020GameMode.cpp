@@ -2,6 +2,7 @@
 
 #include "GGJ2020GameMode.h"
 #include "GGJ2020HUD.h"
+#include "GameFramework/Character.h"
 #include "GGJ2020Character.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/Engine.h"
@@ -26,10 +27,11 @@ void AGGJ2020GameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
+	PlayerController = GetPlayerController();
+
 	//Show player HUD
 	if (wPlayerHUD)
 	{
-		APlayerController* PlayerController = GetPlayerController();
 		if (PlayerController != nullptr)
 		{
 			PlayerHUDWidget = CreateWidget<UUserWidget>(PlayerController, wPlayerHUD);
@@ -65,6 +67,17 @@ void AGGJ2020GameMode::BeginPlay()
 			}
 		}
 	}
+
+
+	//Tracking the player's power
+	PlayerPower = Cast<AGGJ2020Character>(GetPlayerController()->GetCharacter())->GetPowerComponent();
+	
+	if(PlayerPower != nullptr)
+	{
+		FScriptDelegate PlayerPowerChangedDelegate;
+		PlayerPowerChangedDelegate.BindUFunction(this, "PlayerPowerChangedHandler");
+		PlayerPower->OnPowerChanged.Add(PlayerPowerChangedDelegate);
+	}
 }
 
 APlayerController * AGGJ2020GameMode::GetPlayerController()
@@ -87,7 +100,48 @@ APlayerController * AGGJ2020GameMode::GetPlayerController()
 	return PlayerController;
 }
 
+void AGGJ2020GameMode::PlayerPowerChangedHandler()
+{
+	if (PlayerPower != nullptr)
+	{
+		//Loose condition
+		if (PlayerPower->GetPowerAmount() <= 0)
+		{
+			ProceedGameOver();
+		}
+	}
+}
+
 void AGGJ2020GameMode::PanelSolveHandler(APanel * SolvedPanel)
 {
 	GetGameState<AGGJ2020GameStateBase>()->MovePanelToSolved(SolvedPanel);
+}
+
+void AGGJ2020GameMode::ProceedGameOver()
+{
+	GetGameState<AGGJ2020GameStateBase>()->SetGameInProgress(false);
+
+	//Remove Player HUD
+	if (PlayerHUDWidget != nullptr)
+	{
+		PlayerHUDWidget->RemoveFromParent();
+	}
+
+	//Show Game over HUD
+	if (wGameOver)
+	{
+		if (PlayerController != nullptr)
+		{
+			GameOverWidget = CreateWidget<UUserWidget>(PlayerController, wGameOver);
+
+			if (GameOverWidget != nullptr)
+			{
+				GameOverWidget->AddToViewport();
+				
+				FInputModeUIOnly InputModeUI;
+				PlayerController->SetInputMode(InputModeUI);
+				PlayerController->bShowMouseCursor = true;
+			}
+		}
+	}
 }

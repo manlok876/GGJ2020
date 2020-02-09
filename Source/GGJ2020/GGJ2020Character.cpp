@@ -210,7 +210,7 @@ void AGGJ2020Character::OnInteract()
 	//DrawDebugLine(GetWorld(), Start, End, FColor::Green, false, 1.0f, 0.0f, 1.0f);
 
 	bool isHit = GetWorld()->LineTraceSingleByChannel(OutHit, Start, End, ECC_Visibility, CollisionParams);
-
+	
 	if (isHit)
 	{
 		if (OutHit.bBlockingHit)
@@ -343,4 +343,9 @@ bool AGGJ2020Character::EnableTouchscreenMovement(class UInputComponent* PlayerI
 	}
 	
 	return false;
+}
+
+UPowerActorComponent * AGGJ2020Character::GetPowerComponent()
+{
+	return PowerComponent;
 }

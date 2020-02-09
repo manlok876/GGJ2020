@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Panel.h"
 #include "GGJ2020GameStateBase.h"
+#include "PowerActorComponent.h"
 #include "GGJ2020GameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -20,18 +21,55 @@ public:
 
 protected:
 
+	UFUNCTION()
 	APlayerController* GetPlayerController();
+
+	UFUNCTION()
+		void PlayerPowerChangedHandler();
 
 	UFUNCTION()
 		void PanelSolveHandler(APanel* SolvedPanel);
 
-public:
+	UFUNCTION()
+		void ProceedGameOver();
 
+	UPROPERTY()
+		APlayerController* PlayerController;
+
+	UPROPERTY()
+		UPowerActorComponent* PlayerPower;
+
+
+	//Widgets
+	//HUD
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player HUD")
 		TSubclassOf<UUserWidget> wPlayerHUD;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Player HUD")
 		UUserWidget* PlayerHUDWidget;
+
+	//Game over
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game over")
+		TSubclassOf<UUserWidget> wGameOver;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game over")
+		UUserWidget* GameOverWidget;
+	
+	//Win
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game win")
+		TSubclassOf<UUserWidget> wGameWin;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game win")
+		UUserWidget* GameWinWidget;
+
+	//Pause
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game pause")
+		TSubclassOf<UUserWidget> wGamePause;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game pause")
+		UUserWidget* GamePauseWidget;
+
+public:
 
 
 };

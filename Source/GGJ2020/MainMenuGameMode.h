@@ -20,7 +20,9 @@ class GGJ2020_API AMainMenuGameMode : public AGameMode
 
 protected:
 
+	UFUNCTION()
 	APlayerController* GetPlayerController();
+
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Main menu")
