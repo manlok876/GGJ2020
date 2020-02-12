@@ -69,6 +69,13 @@ void AGGJ2020GameMode::BeginPlay()
 	}
 
 
+	//Update panels icons on HUD
+	if (PlayerHUDWidget != nullptr)
+	{
+		Cast<UPlayerHUD>(PlayerHUDWidget)->OnUpdateSolvedPanels(GetGameState<AGGJ2020GameStateBase>()->GetSolvedPanelsNum(), GetGameState<AGGJ2020GameStateBase>()->GetUnsolvedPanelsNum());
+	}
+
+
 	//Tracking the player's power
 	PlayerPower = Cast<AGGJ2020Character>(GetPlayerController()->GetCharacter())->GetPowerComponent();
 	
@@ -115,6 +122,11 @@ void AGGJ2020GameMode::PlayerPowerChangedHandler()
 void AGGJ2020GameMode::PanelSolveHandler(APanel * SolvedPanel)
 {
 	GetGameState<AGGJ2020GameStateBase>()->MovePanelToSolved(SolvedPanel);
+
+	if (PlayerHUDWidget != nullptr)
+	{
+		Cast<UPlayerHUD>(PlayerHUDWidget)->OnUpdateSolvedPanels(GetGameState<AGGJ2020GameStateBase>()->GetSolvedPanelsNum(), GetGameState<AGGJ2020GameStateBase>()->GetUnsolvedPanelsNum());
+	}
 }
 
 void AGGJ2020GameMode::ProceedGameOver()
@@ -141,6 +153,7 @@ void AGGJ2020GameMode::ProceedGameOver()
 				FInputModeUIOnly InputModeUI;
 				PlayerController->SetInputMode(InputModeUI);
 				PlayerController->bShowMouseCursor = true;
+				PlayerController->StopMovement();
 			}
 		}
 	}

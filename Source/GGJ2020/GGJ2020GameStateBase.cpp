@@ -42,10 +42,20 @@ bool AGGJ2020GameStateBase::MovePanelToSolved(APanel * PanelToMove)
 	return false;
 }
 
-TArray<APanel*> AGGJ2020GameStateBase::GetSolvedPanels()
+int AGGJ2020GameStateBase::GetSolvedPanelsNum()
 {
-	return SolvedPanels;
+	return SolvedPanels.Num();
 }
+
+int AGGJ2020GameStateBase::GetUnsolvedPanelsNum()
+{
+	return UnsolvedPanels.Num();
+}
+
+//TArray<APanel*> AGGJ2020GameStateBase::GetSolvedPanels()
+//{
+//	return SolvedPanels;
+//}
 
 bool AGGJ2020GameStateBase::GetGameInProgress()
 {

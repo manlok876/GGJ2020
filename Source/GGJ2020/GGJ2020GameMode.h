@@ -7,6 +7,7 @@
 #include "Panel.h"
 #include "GGJ2020GameStateBase.h"
 #include "PowerActorComponent.h"
+#include "PlayerHUD.h"
 #include "GGJ2020GameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -43,7 +44,7 @@ protected:
 	//Widgets
 	//HUD
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player HUD")
-		TSubclassOf<UUserWidget> wPlayerHUD;
+		TSubclassOf<UPlayerHUD> wPlayerHUD;
 
 	UPROPERTY(BlueprintReadWrite, Category = "Player HUD")
 		UUserWidget* PlayerHUDWidget;

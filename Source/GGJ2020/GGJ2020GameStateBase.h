@@ -37,8 +37,14 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Panels")
 		bool MovePanelToSolved(APanel* PanelToMove);
 
+	/*UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Panels")
+		TArray<APanel*> GetSolvedPanels();*/
+
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Panels")
-		TArray<APanel*> GetSolvedPanels();
+		int GetSolvedPanelsNum();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Panels")
+		int GetUnsolvedPanelsNum();
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, Category = "Game state")
 		bool GetGameInProgress();
