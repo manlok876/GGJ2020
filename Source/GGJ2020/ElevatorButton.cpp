@@ -2,6 +2,7 @@
 
 
 #include "ElevatorButton.h"
+#include "Elevator.h"
 
 // Sets default values
 AElevatorButton::AElevatorButton()
@@ -23,5 +24,20 @@ void AElevatorButton::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+bool AElevatorButton::GetIsActive()
+{
+	return bIsActive;
+}
+
+void AElevatorButton::SetElevator(AElevator * NewElevator)
+{
+	Elevator = NewElevator;
+}
+
+void AElevatorButton::SetIsActive_Implementation(bool bNewIsActive)
+{
+	bIsActive = bNewIsActive;
 }
 

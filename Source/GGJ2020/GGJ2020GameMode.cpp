@@ -85,6 +85,23 @@ void AGGJ2020GameMode::BeginPlay()
 		PlayerPowerChangedDelegate.BindUFunction(this, "PlayerPowerChangedHandler");
 		PlayerPower->OnPowerChanged.Add(PlayerPowerChangedDelegate);
 	}
+
+
+	//Get the elevator
+	TArray<AActor*> ElevatorActors;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ElevatorClass, ElevatorActors);
+	if (ElevatorActors.Num() > 0)
+	{
+		Elevator = Cast<AElevator>(ElevatorActors[0]);
+	}
+
+	//Binding handler on player enter the elevator
+	if (Elevator != nullptr)
+	{
+		FScriptDelegate PlayerEnteredElevatorDelegate;
+		PlayerEnteredElevatorDelegate.BindUFunction(this, "PlayerEnteredElevatorHandler");
+		Elevator->OnPlayerEnteredElevator.Add(PlayerEnteredElevatorDelegate);
+	}
 }
 
 APlayerController * AGGJ2020GameMode::GetPlayerController()
@@ -127,6 +144,16 @@ void AGGJ2020GameMode::PanelSolveHandler(APanel * SolvedPanel)
 	{
 		Cast<UPlayerHUD>(PlayerHUDWidget)->OnUpdateSolvedPanels(GetGameState<AGGJ2020GameStateBase>()->GetSolvedPanelsNum(), GetGameState<AGGJ2020GameStateBase>()->GetUnsolvedPanelsNum());
 	}
+
+	if ((GetGameState<AGGJ2020GameStateBase>()->GetUnsolvedPanelsNum() == 0) && (Elevator != nullptr) && (Elevator->GetElevatorButton() != nullptr))
+	{
+		Elevator->GetElevatorButton()->SetIsActive(true);
+	}
+}
+
+void AGGJ2020GameMode::PlayerEnteredElevatorHandler()
+{
+	ProceedWin();
 }
 
 void AGGJ2020GameMode::ProceedGameOver()
@@ -144,6 +171,7 @@ void AGGJ2020GameMode::ProceedGameOver()
 	{
 		if (PlayerController != nullptr)
 		{
+			PlayerController->StopMovement();
 			GameOverWidget = CreateWidget<UUserWidget>(PlayerController, wGameOver);
 
 			if (GameOverWidget != nullptr)
@@ -157,4 +185,38 @@ void AGGJ2020GameMode::ProceedGameOver()
 			}
 		}
 	}
+}
+
+void AGGJ2020GameMode::ProceedWin()
+{
+	GetGameState<AGGJ2020GameStateBase>()->SetGameInProgress(false);
+
+	//Remove Player HUD
+	if (PlayerHUDWidget != nullptr)
+	{
+		PlayerHUDWidget->RemoveFromParent();
+	}
+
+	
+	if (PlayerController != nullptr)
+	{
+		PlayerController->StopMovement();
+
+		//Show win HUD
+		if (wGameWin)
+		{
+			GameWinWidget = CreateWidget<UUserWidget>(PlayerController, wGameWin);
+
+			if (GameWinWidget != nullptr)
+			{
+				GameWinWidget->AddToViewport();
+
+				FInputModeUIOnly InputModeUI;
+				PlayerController->SetInputMode(InputModeUI);
+				PlayerController->bShowMouseCursor = true;
+				PlayerController->StopMovement();
+			}
+		}
+	}
+
 }

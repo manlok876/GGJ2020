@@ -24,6 +24,7 @@ AGGJ2020Character::AGGJ2020Character()
 {
 	// Set size for collision capsule
 	GetCapsuleComponent()->InitCapsuleSize(55.f, 96.0f);
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 
 	// set our turn rates for input
 	BaseTurnRate = 45.f;
@@ -124,7 +125,7 @@ void AGGJ2020Character::SetupPlayerInputComponent(class UInputComponent* PlayerI
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 
 	// Bind fire event
-	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGGJ2020Character::OnFire);
+	//PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AGGJ2020Character::OnFire);
 
 	// Enable touchscreen input
 	EnableTouchscreenMovement(PlayerInputComponent);

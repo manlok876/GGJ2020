@@ -8,6 +8,7 @@
 #include "GGJ2020GameStateBase.h"
 #include "PowerActorComponent.h"
 #include "PlayerHUD.h"
+#include "Elevator.h"
 #include "GGJ2020GameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -32,7 +33,13 @@ protected:
 		void PanelSolveHandler(APanel* SolvedPanel);
 
 	UFUNCTION()
+		void PlayerEnteredElevatorHandler();
+
+	UFUNCTION()
 		void ProceedGameOver();
+	
+	UFUNCTION()
+		void ProceedWin();
 
 	UPROPERTY()
 		APlayerController* PlayerController;
@@ -46,29 +53,36 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Player HUD")
 		TSubclassOf<UPlayerHUD> wPlayerHUD;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Player HUD")
+	UPROPERTY(BlueprintReadOnly, Category = "Player HUD")
 		UUserWidget* PlayerHUDWidget;
 
 	//Game over
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game over")
 		TSubclassOf<UUserWidget> wGameOver;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game over")
+	UPROPERTY(BlueprintReadOnly, Category = "Game over")
 		UUserWidget* GameOverWidget;
 	
 	//Win
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game win")
 		TSubclassOf<UUserWidget> wGameWin;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game win")
+	UPROPERTY(BlueprintReadOnly, Category = "Game win")
 		UUserWidget* GameWinWidget;
 
 	//Pause
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game pause")
 		TSubclassOf<UUserWidget> wGamePause;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game pause")
+	UPROPERTY(BlueprintReadOnly, Category = "Game pause")
 		UUserWidget* GamePauseWidget;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Game win")
+		TSubclassOf<AElevator> ElevatorClass;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Game win")
+		AElevator* Elevator;
+
 
 public:
 
